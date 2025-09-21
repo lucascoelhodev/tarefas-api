@@ -184,6 +184,81 @@
                     }
                 }
             },
+            "put": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Update a task by ID",
+                "operationId": "38073503172dbe2e2949d4af0d304312",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the task to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 3
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "titulo",
+                                    "descricao"
+                                ],
+                                "properties": {
+                                    "titulo": {
+                                        "type": "string",
+                                        "example": "Atualizar Dashboard"
+                                    },
+                                    "descricao": {
+                                        "type": "string",
+                                        "example": "Atualizar a dashboard"
+                                    },
+                                    "status": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Task"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Task not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Task not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "delete": {
                 "tags": [
                     "Tasks"
@@ -204,7 +279,7 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "No Content - Collaborator deleted successfully"
+                        "description": "No Content - Task deleted successfully"
                     },
                     "404": {
                         "description": "Task not found",
