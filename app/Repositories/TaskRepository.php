@@ -2,8 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Interface\LoggerInterface;
 use App\Models\Task;
-use App\Services\Logger\LoggerInterface;
 use Illuminate\Support\Facades\DB;
 
 class TaskRepository implements TaskRepositoryInterface

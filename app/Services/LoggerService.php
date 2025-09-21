@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Services\Logger;
+namespace App\Services;
 
+use App\Interface\LoggerInterface;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class MongoLogger implements LoggerInterface
+class LoggerService implements LoggerInterface
 {
     protected $collection = 'logs';
     protected $counterCollection = 'counters';
@@ -21,7 +22,6 @@ class MongoLogger implements LoggerInterface
             'data_hora'  => Carbon::now()->format('d/m/Y H:i:s')
         ]);
     }
-
     protected function getNextId(): int
     {
         $countersCollection = DB::connection('mongodb')->getMongoDB()->selectCollection($this->counterCollection);
@@ -34,5 +34,14 @@ class MongoLogger implements LoggerInterface
             ]
         );
         return $counter['seq'] ?? 1;
+    }
+    public function getLogs(?int $id = null): array
+    {
+        $query = DB::connection('mongodb')->table($this->collection)
+            ->orderBy('data_hora', 'desc');
+        if ($id !== null) {
+            return [$query->where('_id', $id)->first()];
+        }
+        return $query->limit(30)->get()->toArray();
     }
 }
