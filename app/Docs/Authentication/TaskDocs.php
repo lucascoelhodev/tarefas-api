@@ -114,7 +114,7 @@ class TaskDocs
      *     ),
      *     @OA\Response(
      *         response=204,
-     *         description="No Content - Collaborator deleted successfully"
+     *         description="No Content - Task deleted successfully"
      *     ),
      *     @OA\Response(
      *         response=404,
@@ -126,4 +126,40 @@ class TaskDocs
      * )
      */
      public function destroy() {}
+     /**
+     * @OA\Put(
+     *     path="/api/tasks/{id}",
+     *     summary="Update a task by ID",
+     *     tags={"Tasks"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the task to update",
+     *         @OA\Schema(type="integer", example=3)
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"titulo", "descricao"},
+     *              @OA\Property(property="titulo", type="string", example="Atualizar Dashboard"),
+     *              @OA\Property(property="descricao", type="string", example="Atualizar a dashboard"),
+     *              @OA\Property(property="status", type="integer", example=1)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Task updated successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Task")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Task not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Task not found")
+     *         )
+     *     )
+     * )
+     */
+    public function update() {}
 }
