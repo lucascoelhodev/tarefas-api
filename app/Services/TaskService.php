@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\TaskRepositoryInterface;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class TaskService
 {
@@ -16,5 +17,9 @@ class TaskService
     public function create(array $data)
     {
         return $this->repository->create($data);
+    }
+    public function show($id)
+    {
+        return $this->repository->show($id);
     }
 }

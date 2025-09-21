@@ -20,4 +20,8 @@ class TaskRepository implements TaskRepositoryInterface
             return $this->model->create($data);
         });
     }
+    public function show($id)
+    {
+        return $this->model->findOrFail($id);
+    }
 }

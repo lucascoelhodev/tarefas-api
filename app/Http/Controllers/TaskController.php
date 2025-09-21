@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TaskCreateRequest;
 use App\Http\Resources\TaskResource;
 use App\Services\TaskService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class TaskController extends Controller
@@ -24,4 +25,14 @@ class TaskController extends Controller
             'task' => new TaskResource($task)
         ], 201);
     }
+    public function show($id)
+{
+    try {
+        $task = $this->taskService->show($id);
+        return new TaskResource($task);
+    } catch (ModelNotFoundException $e) {
+        return response()->json(['message' => 'Task not found'], 404);
+    }
+}
+
 }
