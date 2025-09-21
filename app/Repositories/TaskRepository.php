@@ -30,8 +30,19 @@ class TaskRepository implements TaskRepositoryInterface
     }
     public function delete($id)
     {
-        $task = $this->model->findOrFail($id);
-        $task->delete();
-        return true;
+        return DB::transaction(function () use ($id) {
+            $task = $this->model->findOrFail($id);
+            $task->delete();
+            return true;
+        });
+    }
+
+    public function update($id, $data)
+    {
+        return DB::transaction(function () use ($id, $data) {
+            $task = $this->model->findOrFail($id);
+            $task->update($data);
+            return $task;
+        });
     }
 }

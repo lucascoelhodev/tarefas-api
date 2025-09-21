@@ -8,4 +8,5 @@ interface TaskRepositoryInterface
     public function show($id);
     public function index($paginate);
     public function delete($id);
+    public function update($id, $data);
 }

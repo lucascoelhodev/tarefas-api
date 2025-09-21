@@ -30,4 +30,8 @@ class TaskService
     {
         return $this->repository->delete($id);
     }
+    public function update($id, array $data)
+    {
+        return $this->repository->update($id, $data);
+    }
 }

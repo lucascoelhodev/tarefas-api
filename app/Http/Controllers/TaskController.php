@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskCreateRequest;
+use App\Http\Requests\TaskUpdateRequest;
 use App\Http\Resources\TaskResource;
 use App\Services\TaskService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -45,6 +46,16 @@ class TaskController extends Controller
         try {
             $this->taskService->delete($id);
             return response()->noContent();
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message' => 'Task not found'], 404);
+        }
+    }
+    public function update(TaskUpdateRequest $request, $id)
+    {
+        $data = $request->getOnlyData();
+        try {
+            $updatedTask = $this->taskService->update($id, $data);
+            return new TaskResource($updatedTask);
         } catch (ModelNotFoundException $e) {
             return response()->json(['message' => 'Task not found'], 404);
         }
