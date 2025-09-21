@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Logger\LoggerInterface;
+use App\Services\Logger\MongoLogger;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,6 +16,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             \App\Repositories\TaskRepositoryInterface::class,
             \App\Repositories\TaskRepository::class
+        );
+        $this->app->bind(
+            LoggerInterface::class,
+            MongoLogger::class
         );
     }
 
