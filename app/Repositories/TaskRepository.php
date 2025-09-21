@@ -28,5 +28,10 @@ class TaskRepository implements TaskRepositoryInterface
     {
         return $this->model->paginate($paginate);
     }
-
+    public function delete($id)
+    {
+        $task = $this->model->findOrFail($id);
+        $task->delete();
+        return true;
+    }
 }

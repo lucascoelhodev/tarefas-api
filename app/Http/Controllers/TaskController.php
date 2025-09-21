@@ -40,4 +40,13 @@ class TaskController extends Controller
         $tasks = $this->taskService->index($paginate);
         return TaskResource::collection($tasks);
     }
+    public function destroy($id)
+    {
+        try {
+            $this->taskService->delete($id);
+            return response()->noContent();
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message' => 'Task not found'], 404);
+        }
+    }
 }

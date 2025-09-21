@@ -26,4 +26,8 @@ class TaskService
     {
         return $this->repository->index($paginate);
     }
+    public function delete($id)
+    {
+        return $this->repository->delete($id);
+    }
 }
