@@ -24,4 +24,9 @@ class TaskRepository implements TaskRepositoryInterface
     {
         return $this->model->findOrFail($id);
     }
+    public function index($paginate)
+    {
+        return $this->model->paginate($paginate);
+    }
+
 }

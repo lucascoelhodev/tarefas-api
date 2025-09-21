@@ -22,4 +22,8 @@ class TaskService
     {
         return $this->repository->show($id);
     }
+    public function index(int $paginate = 10)
+    {
+        return $this->repository->index($paginate);
+    }
 }

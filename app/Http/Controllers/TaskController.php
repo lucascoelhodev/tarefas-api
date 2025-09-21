@@ -26,13 +26,18 @@ class TaskController extends Controller
         ], 201);
     }
     public function show($id)
-{
-    try {
-        $task = $this->taskService->show($id);
-        return new TaskResource($task);
-    } catch (ModelNotFoundException $e) {
-        return response()->json(['message' => 'Task not found'], 404);
+    {
+        try {
+            $task = $this->taskService->show($id);
+            return new TaskResource($task);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message' => 'Task not found'], 404);
+        }
     }
-}
-
+    public function index()
+    {
+        $paginate = request()->query('per_page', 10);
+        $tasks = $this->taskService->index($paginate);
+        return TaskResource::collection($tasks);
+    }
 }
