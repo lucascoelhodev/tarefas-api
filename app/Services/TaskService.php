@@ -2,24 +2,19 @@
 
 namespace App\Services;
 
-use App\Models\Task;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
+use App\Repositories\TaskRepositoryInterface;
 
 class TaskService
 {
-    protected $model;
+    protected TaskRepositoryInterface $repository;
 
-    public function __construct(Task $model)
+    public function __construct(TaskRepositoryInterface $repository)
     {
-        $this->model = $model ?? new Task();
+        $this->repository = $repository;
     }
-    public function create($data)
+
+    public function create(array $data)
     {
-        DB::beginTransaction();
-        $task = $this->model->create($data);
-        DB::commit();
-        return $task;
-    }    
+        return $this->repository->create($data);
+    }
 }

@@ -24,5 +24,4 @@ class TaskController extends Controller
             'task' => new TaskResource($task)
         ], 201);
     }
-    
 }
