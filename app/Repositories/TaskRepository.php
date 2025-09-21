@@ -2,22 +2,26 @@
 
 namespace App\Repositories;
 
+use App\Interface\LoggerInterface;
 use App\Models\Task;
 use Illuminate\Support\Facades\DB;
 
 class TaskRepository implements TaskRepositoryInterface
 {
     protected $model;
-
-    public function __construct(Task $model)
+    protected LoggerInterface $logger;
+    public function __construct(Task $model, LoggerInterface $logger)
     {
         $this->model = $model;
+        $this->logger = $logger;
     }
 
     public function create(array $data)
     {
         return DB::transaction(function () use ($data) {
-            return $this->model->create($data);
+            $task = $this->model->create($data);
+            $this->logger->log('Tarefa criada', "Tarefa {$task->id} criada. Título: {$task->titulo}", $task->id);
+            return $task;
         });
     }
     public function show($id)
@@ -32,6 +36,7 @@ class TaskRepository implements TaskRepositoryInterface
     {
         return DB::transaction(function () use ($id) {
             $task = $this->model->findOrFail($id);
+            $this->logger->log('Tarefa Excluída', "Tarefa {$task->id} excluída. Título: {$task->titulo}", $task->id);
             $task->delete();
             return true;
         });
@@ -42,6 +47,7 @@ class TaskRepository implements TaskRepositoryInterface
         return DB::transaction(function () use ($id, $data) {
             $task = $this->model->findOrFail($id);
             $task->update($data);
+            $this->logger->log('Tarefa Atualizada', "Tarefa {$task->id} atualizada. Título: {$task->titulo}", $task->id);
             return $task;
         });
     }
