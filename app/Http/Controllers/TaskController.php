@@ -30,6 +30,9 @@ class TaskController extends Controller
     {
         try {
             $task = $this->taskService->show($id);
+            if (!$task) {
+                return response()->json(['message' => 'Task not found'], 404);
+            }
             return new TaskResource($task);
         } catch (ModelNotFoundException $e) {
             return response()->json(['message' => 'Task not found'], 404);
