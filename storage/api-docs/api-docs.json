@@ -6,6 +6,89 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/logs/{id}": {
+            "get": {
+                "tags": [
+                    "Logs"
+                ],
+                "summary": "Get a log by ID or the latest 30 logs if no ID is provided",
+                "operationId": "35f6a528af4e325dc64ebe4b628515da",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the log to retrieve. If not provided, returns the latest 30 logs.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Log found or list of latest 30 logs",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "acao": {
+                                                        "type": "string",
+                                                        "example": "Tarefa criada"
+                                                    },
+                                                    "detalhes": {
+                                                        "type": "string",
+                                                        "example": "Tarefa 1 criada. Título: Teste"
+                                                    },
+                                                    "referencia": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "data_hora": {
+                                                        "type": "string",
+                                                        "example": "22/09/2025 02:43:45"
+                                                    },
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 4
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Log not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Log not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/tasks": {
             "get": {
                 "tags": [
@@ -338,6 +421,10 @@
         }
     },
     "tags": [
+        {
+            "name": "Logs",
+            "description": "Logs"
+        },
         {
             "name": "Tasks",
             "description": "Tasks"
