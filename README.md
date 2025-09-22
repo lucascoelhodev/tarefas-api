@@ -19,32 +19,48 @@ Este projeto é uma API RESTFUL que faz a gestão de tarefas e seus status.
    ```bash
    cp .env.example .env
    ```
-Edite o .env para configurar:
+   | Variável            | Descrição                 | Exemplo       |
+    | ------------------- | ------------------------- | ------------- |
+    | `APP_NAME`          | Nome da aplicação         | `Tarefas API` |
+    | `APP_ENV`           | Ambiente da aplicação     | `local`       |
+    | `APP_DEBUG`         | Ativar debug              | `true`        |
+    | `DB_CONNECTION`     | Tipo de banco             | `mysql`       |
+    | `DB_HOST`           | Host do banco no Docker   | `mysql`       |
+    | `DB_PORT`           | Porta do banco            | `3306`        |
+    | `DB_DATABASE`       | Nome do banco             | `laravel`     |
+    | `DB_USERNAME`       | Usuário do banco          | `root`        |
+    | `DB_PASSWORD`       | Senha do banco            | `secret`      |
+    | `MONGO_DB_HOST`     | Host do MongoDB no Docker | `mongo`       |
+    | `MONGO_DB_PORT`     | Porta do MongoDB          | `27017`       |
+    | `MONGO_DB_DATABASE` | Nome do banco Mongo       | `laravel`     |
+    | `MONGO_DB_USERNAME` | Usuário Mongo             | `root`        |
+    | `MONGO_DB_PASSWORD` | Senha Mongo               | `secret`      |
+   ⚠️ Não altere APP_KEY. Ela será gerada automaticamente no próximo passo.
 
-APP_KEY: será gerada no próximo passo
-
-DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD de acordo com o container
-3. Rode o composer install:
+3. Suba os containers Docker:
 ```
-composer install
-```
-    
-4. Suba os containers via Sail:
+docker-compose up -d
+```   
+4. Acesse o container:
     ```
-    ./vendor/bin/sail up -d
+    docker exec -it tarefas-api_laravel.test_1 bash
+    ```
+5. Instale as dependências:
+    ```
+    composer install
     ```
 5. Instale a APP_KEY:
    ```
-   ./vendor/bin/sail php artisan key:generate
+   php artisan key:generate
    ```
 6. Rode as migrations:
    ```
-   ./vendor/bin/sail php artisan migrate
+   php artisan migrate
    ```
 ### Testando a aplicação
 Execute dentro do container da aplicação:
     ```
-    ./vendor/bin/sail php artisan test
+    php artisan test
     ``
 
 7. Acesse a documentação no seguinte link: http://localhost:8080/api/documentation#/Tasks para testar os endpoints.
