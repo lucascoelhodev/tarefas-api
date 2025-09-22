@@ -1,50 +1,54 @@
 services:
     laravel.test:
         build:
-            context: './vendor/laravel/sail/runtimes/8.4'
+            context: '.'
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
-        image: 'sail-8.4/app'
-        extra_hosts:
-            - 'host.docker.internal:host-gateway'
+                WWWUSER: '${WWWUSER}'
+        image: laravel_app
         ports:
-            - '${APP_PORT:-8080}:80'
+            - '${APP_PORT:-8080}:8000'
             - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
         environment:
-            WWWUSER: '${WWWUSER}'
-            LARAVEL_SAIL: 1
-            XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
-            XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
-            IGNITION_LOCAL_SITES_PATH: '${PWD}'
+            APP_ENV: local
+            APP_DEBUG: 1
+            DB_CONNECTION: mysql
+            DB_HOST: mysql
+            DB_PORT: 3306
+            DB_DATABASE: ${DB_DATABASE}
+            DB_USERNAME: ${DB_USERNAME}
+            DB_PASSWORD: ${DB_PASSWORD}
+            MONGO_DB_CONNECTION: mongodb
+            MONGO_DB_HOST: mongo
+            MONGO_DB_PORT: 27017
+            MONGO_DB_DATABASE: laravel
+            MONGO_DB_USERNAME: root
+            MONGO_DB_PASSWORD: secret
         volumes:
             - '.:/var/www/html'
+        working_dir: /var/www/html
         networks:
-            - sail
+            - laravel-net
         depends_on:
             - mysql
+            - mongo
     mysql:
-        image: 'mysql/mysql-server:8.0'
+        image: mysql:8.0
+        container_name: mysql
         ports:
             - '${FORWARD_DB_PORT:-3307}:3306'
         environment:
-            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-            MYSQL_ROOT_HOST: '%'
-            MYSQL_DATABASE: '${DB_DATABASE}'
-            MYSQL_USER: '${DB_USERNAME}'
-            MYSQL_PASSWORD: '${DB_PASSWORD}'
-            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
         volumes:
-            - 'sail-mysql:/var/lib/mysql'
-            - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
+            - mysql-data:/var/lib/mysql
         networks:
-            - sail
+            - laravel-net
         healthcheck:
-            test:
-                - CMD
-                - mysqladmin
-                - ping
-                - '-p${DB_PASSWORD}'
+            test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
             retries: 3
             timeout: 5s
     mongo:
@@ -56,19 +60,19 @@ services:
             MONGO_INITDB_ROOT_PASSWORD: 'secret'
             MONGO_INITDB_DATABASE: 'laravel'
         volumes:
-            - 'sail-mongo:/data/db'
+            - mongo-data:/data/db
         networks:
-            - sail
+            - laravel-net
         healthcheck:
             test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
             interval: 10s
             timeout: 5s
             retries: 5
 networks:
-    sail:
+    laravel-net:
         driver: bridge
 volumes:
-    sail-mysql:
+    mysql-data:
         driver: local
-    sail-mongo:
+    mongo-data:
         driver: local
