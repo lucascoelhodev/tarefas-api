@@ -43,7 +43,7 @@ docker-compose up -d
 ```   
 4. Acesse o container:
     ```
-    docker exec -it tarefas-api_laravel.test_1 bash
+    docker exec -it laravel_app bash
     ```
 5. Instale as dependências:
     ```
