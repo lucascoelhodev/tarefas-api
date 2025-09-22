@@ -3,7 +3,7 @@
 Este projeto é uma API RESTFUL que faz a gestão de tarefas e seus status.
 
 
-## Como rodar o projeto localmente com Docker/Sail
+## Como rodar o projeto localmente com Docker
 
 ### Requisitos
 - Docker e Docker Compose instalados ([instruções](https://docs.docker.com/get-docker/))
@@ -13,7 +13,7 @@ Este projeto é uma API RESTFUL que faz a gestão de tarefas e seus status.
 1. Clone o repositório:
    ```bash
    git clone https://github.com/lucascoelhodev/tarefas-api.git
-   cd catalogo-de-filmes
+   cd tarefas-api
    ```
 2. Copie o arquivo de ambiente e configure as variáveis:
    ```bash
